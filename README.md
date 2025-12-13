@@ -49,6 +49,7 @@ Below is the head of my cleand data:
 | ESPORTSTMNT01_2690210   | Blue | 0      | 1713       | 69.0        | 29.0       | sup     | 1.0       | 443.0        | -497.0     | 7.0        | 2.0         | 2.0        | 499.0         | 17     | 13      | 1033             |
 
 ## Exploratory Data Analysis
+### Univariate Analysis
 In my exploratory data analysis, I first perform univariate analysis to examine the distribution of vision score in my data.
 <iframe
   src="assets/visionscore_distr.html"
@@ -56,3 +57,14 @@ In my exploratory data analysis, I first perform univariate analysis to examine 
   height="600"
   frameborder="0"
 ></iframe>
+
+### Bivariate Analysis
+I then analyzed the distribution of vision score splitted by each of the five positions.
+<iframe
+  src="assets/biv_box.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+
