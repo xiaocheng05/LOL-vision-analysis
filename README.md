@@ -71,10 +71,8 @@ The distribution of vision score is quite different for each position. Supports 
 
 ### Grouping and Aggregates
 I used a pivot table indexed by side and columns of different positions. The value in this table represents the mean vision score by this position on this side.
-| side | bot   | jng   | mid   | sup   | top   |
-|------|-------|-------|-------|-------|-------|
-| Blue | 38.65 | 43.41 | 33.85 | 79.70 | 31.01 |
-| Red  | 37.04 | 42.81 | 33.67 | 78.72 | 30.69 |
+
+'| side   |     bot |     jng |     mid |     sup |     top |\n|:-------|--------:|--------:|--------:|--------:|--------:|\n| Blue   | 38.6452 | 43.4116 | 33.8472 | 79.7019 | 31.0143 |\n| Red    | 37.0386 | 42.8096 | 33.6705 | 78.716  | 30.6875 |'
 This further shows that support and jungle tends to have higher vision score. More interestingly, the blue side tends to have higher vision score compared to the red side. The lets me to question whether the map of the game is unfair, giving the blue side more chances to gain vision. I will examine whether this difference in vision score of the two side is likely due to change or not in the further sections. 
 
 # Assessment of Missingness
