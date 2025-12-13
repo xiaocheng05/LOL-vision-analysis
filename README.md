@@ -122,6 +122,7 @@ I will then explore whether the difference in visionscore when splitted by side 
 
 **Null Hypothesis**: The distribution of vision score for the blue side is the same as the team on the red side  
 **Alternative Hypothesis**: The distribution of vision score for the blue side is NOT the same as the team of the red side.
+
 I will use absolute difference in mean as my test statistic because it is simple to compute. I significant difference in mean could lead to rejection of null hypopthesis without needing to use a more complicated test statistic such as the KS statistic. I run a permutation test with significance level 0.05.
 Below is the distribution of absolute difference in mean under the null hypothesis and the line indicats the observed difference in mean.
 <iframe
