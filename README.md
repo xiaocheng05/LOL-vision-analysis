@@ -34,4 +34,25 @@ The original data contains 164 columns and 150588 rows, which is representative 
 
 # Data Cleaning and Exploratory Data Analysis
 
-First I identified the important columns to my analysis: 'gameid','side','result','gamelength','visionscore','wardsplaced', 'position','killsat15','golddiffat15', 'xpdiffat15','csdiffat15', 'assistsat15', 'deathsat15','golddiffat25'. I cleaned the data set to contain only the columns that are important to my analysis. 
+First I identified the important columns to my analysis: 'gameid','side','result','gamelength','visionscore','wardsplaced', 'position','killsat15','golddiffat15', 'xpdiffat15','csdiffat15', 'assistsat15', 'deathsat15','golddiffat25'. I cleaned the data set to contain only the columns that are important to my analysis. In this dataset, each game has 12 rows, with 10 rows representing each of the players, and 2 rows for summarizing the overall team performance and result. I decided to only keep that rows representing players as vision score is a statistic relating to individual player and my analysis does not need the team rows.
+
+Furthermore, I identified that there is one game that has gameid but missing visionscore and wardsplace. Since it is only one, I decided to simply drop that game. Moreover, the column gamelength is storing data in the format 1234 meaning 12 min 34 sec and the data is being stored as integers. I change the data format to be string because 1234 is not intended to mean the number 1234, and I created three new columns, minutes (the number of minutes stored in gamelength), seconds (the number of seconds stored in gamelength), and gamelength_seconds (the total seconds the game took).
+
+Below is the head of my cleand data:
+
+| gameid                  | side | result | gamelength | visionscore | wardsplaced | position | killsat15 | golddiffat15 | xpdiffat15 | csdiffat15 | assistsat15 | deathsat15 | golddiffat25 | minutes | seconds | gamelength_seconds |
+|-------------------------|------|--------|------------|-------------|------------|---------|-----------|--------------|------------|------------|-------------|------------|---------------|--------|---------|------------------|
+| ESPORTSTMNT01_2690210   | Blue | 0      | 1713       | 26.0        | 8.0        | top     | 0.0       | 391.0        | 345.0      | 14.0       | 1.0         | 0.0        | 605.0         | 17     | 13      | 1033             |
+| ESPORTSTMNT01_2690210   | Blue | 0      | 1713       | 48.0        | 6.0        | jng     | 2.0       | 541.0        | -275.0     | -11.0      | 3.0         | 2.0        | 421.0         | 17     | 13      | 1033             |
+| ESPORTSTMNT01_2690210   | Blue | 0      | 1713       | 29.0        | 19.0       | mid     | 0.0       | -475.0       | 153.0      | 1.0        | 3.0         | 0.0        | -149.0        | 17     | 13      | 1033             |
+| ESPORTSTMNT01_2690210   | Blue | 0      | 1713       | 25.0        | 12.0       | bot     | 2.0       | -793.0       | -1343.0    | -34.0      | 1.0         | 2.0        | -1288.0       | 17     | 13      | 1033             |
+| ESPORTSTMNT01_2690210   | Blue | 0      | 1713       | 69.0        | 29.0       | sup     | 1.0       | 443.0        | -497.0     | 7.0        | 2.0         | 2.0        | 499.0         | 17     | 13      | 1033             |
+
+## Exploratory Data Analysis
+In my exploratory data analysis, I first perform univariate analysis to examine the distribution of vision score in my data.
+<iframe
+  src="assets/visionscore_distr.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
