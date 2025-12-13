@@ -151,9 +151,11 @@ The test RMSE decrease by a little, showing some improvement
 
 # Fairness Analysis
 I tested whether my model is performing well on player with at least one death in the first 15 minutes and those did not. I use a permutation test and a test statistic of difference of rmse. 
+
 **Null Hypothesis:** The distribution of rmse is the same for players with at least one death within 15 minutes and those did not die.
 
 **Alternate Hypothesis:** The distribution of rmse is different for players with at least one death within 15 minutes and those did not die.
+
 Observed RMSE difference (Died - Did not Die): 23.9977378229039
 Permutation p-value: 0.0
 I conclude that my model is being unfair to those have died at least once. The model is performing worse for player with at least one death within 15 minutes.
