@@ -57,6 +57,7 @@ In my exploratory data analysis, I first perform univariate analysis to examine 
   height="600"
   frameborder="0"
 ></iframe>
+The distribution of vision score seems to be right skewed. High vision score is less likely to occur. This is likely because player in a longer game tends to have higher vision score but lone game is rare.
 
 ### Bivariate Analysis
 I then analyzed the distribution of vision score splitted by each of the five positions.
@@ -66,5 +67,86 @@ I then analyzed the distribution of vision score splitted by each of the five po
   height="600"
   frameborder="0"
 ></iframe>
+The distribution of vision score is quite different for each position. Supports seems to have higher vision score over because there role is designed to help the team gain vision. Top laners seems to have lower vision score because they are likely to spend more time on the solo lanes rather than playing for the team's vision.
+
+### Grouping and Aggregates
+I used a pivot table indexed by side and columns of different positions. The value in this table represents the mean vision score by this position on this side.
+| side | bot   | jng   | mid   | sup   | top   |
+|------|-------|-------|-------|-------|-------|
+| Blue | 38.65 | 43.41 | 33.85 | 79.70 | 31.01 |
+| Red  | 37.04 | 42.81 | 33.67 | 78.72 | 30.69 |
+This further shows that support and jungle tends to have higher vision score. More interestingly, the blue side tends to have higher vision score compared to the red side. The lets me to question whether the map of the game is unfair, giving the blue side more chances to gain vision. I will examine whether this difference in vision score of the two side is likely due to change or not in the further sections. 
+
+# Assessment of Missingness
+
+## NMAR Analysis
+The columns important to this analysis does not included any NMAR values. The columns 'visionscore','wardsplaced', 'position','killsat15','golddiffat15', 'xpdiffat15','csdiffat15', 'assistsat15', 'deathsat15','golddiffat25' all have missing values but all above columns except 'golddiffat25' are missing for the same rows. And the number of rows with each of those columns having missing values is the same. This is indicative that the missingness is related to the game itself rather than the values inside those columns. 'golddiffat25' is missing at random as I will verify with a permutation test next.
+Some columns in the original dataset but not related to this project may have NMAR values. For instance, ban1 contains NMAR values because a team can choose to not ban and that will show up as missing in the dataset, so the missingness in the data might mean the value of the ban. Although that ban1 can be missing for other reasons, we are not able to find out the exact reason, but we can conclude that the missingness is related to the missing value itself.
+
+## Missingness Dependency
+After analyzing the visionscore, I will examine another statstics that is important to the game play, golddiffat25.
+To test missingness dependency, I will focus on the distribution of golddiffat25. I will test this against the columns gamelength and side. 
+
+### Gamelength
+First, I examine the distribution of gamelength when golddiffat25 is missing vs not missing.
+
+**Null Hypothesis:** The distribution of gamelength is the same when Duration is missing vs not missing.
+
+**Alternate Hypothesis:** The distribution of gamelength is different when Duration is missing vs not missing
+
+Below is the distribution of gamelength when Duration is missing vs not missing
+<iframe
+  src="assets/ks_perm.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+The two distributions appears do be very different so I will do a permutation test to support the conclusion. I will use KS Statistic to quantify the difference in distribution. I will use a significance level of 0.05.
+The observed KS Statistic is 0.31686197914375763, and the p-value is 0.0. This shows that the probability of obtaining this KS Statistic under the null hypothesis is 0. Therefore, I concluded that I have convincing evdience that the distribution of gamelength when golddiffat25 is missing is different from the distribution of gamelength when golddiffat25 is not missing. Therefore, the missingess of golddiffat25 is dependent on the gamelength. This is intuitive because games that did not last 25 min will not have a golddiffat25.
+
+
+### Gamelength
+Next, I examine whether missingess golddiffat25 is related to side.
+
+**Null Hypothesis:** The distribution of side is the same when Duration is missing vs not missing.
+
+**Alternate Hypothesis:** The distribution of side is different when Duration is missing vs not missing
+
+I used TVD as the test statistic and run a permutation test under 0.05 significance level.
+I got the observed TVD being 0 and a p-value of 1. This shows that the number of rows with side being blue equals the number of row with side being red regardless of whether the golddiffat25 is missing. Therefore, I concluded that the missingness of golddiffat25 is not dependent of side.
+
+# Hypothesis Testing
+I will then explore whether the difference in visionscore when splitted by side discovered earlier is purely due to change or not.
+
+**Null Hypothesis**: The distribution of vision score for the blue side is the same as the team on the red side
+**Alternative Hypothesis**: The distribution of vision score for the blue side is NOT the same as the team of the red side.
+I will use absolute difference in mean as my test statistic because it is simple to compute. I significant difference in mean could lead to rejection of null hypopthesis without needing to use a more complicated test statistic such as the KS statistic. I run a permutation test with significance level 0.05.
+Below is the distribution of absolute difference in mean under the null hypothesis and the line indicats the observed difference in mean.
+<iframe
+  src="assets/vision_perm.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+I got an observed absolute difference of 0.7396238444373608 and a p-value of 0.0. Therefore, I reject and null hypothesis and claim that the distribution of vision score is different depending on the side. Therefore, it is possible that map of LoL give some advantage in terms of vision to one side or an other. Using the pivot table earlier, blue side might be benefitting.
+
+# Framing a Prediction Problem
+I am going to predict the 'golddiffat25' column which is the difference in gold of the two teams at 25 minutes into the game. This is a regression problem. I will try to perform the prediction at 15 minuites into the game because using data after 25 minutes to predict statistics of 25 minutes is useless, so I try to make predictions earlier and while having enough data the can be representative of the game.
+The metric I will use to assess my model will be root mean squared error (RMSE) because it is representative of the model's performance. It can be used to assess performance on unseen data. I will also use R^2 in the report because it is more interpretable. 
+
+# Baseline Model
+The baseline model I built is linear regression with two features, golddiffat15 and side. golddiffat15 is quantitative feature and side is nomial feature. I used one hot encoding to transform side. I used sklearn's library to do one hot encoding and I also dropped one column to avoid colinearity. 
+I used a 80-20 train test split to assess my model.
+The test RMSE is 1178.58 and the R^2 is 0.635. I believe this model is doing well as the R^2 shows it is capturing 63.5% of the variance in the response variable. I think that the game has a lot of variability to it so it will be extremely diffult to predict middle and late game performance based on the early game. One team fight could change the difference in gold completely. Therefore, there is an extremely high variance in the underlying data generating process. Therefore, while 0.635 is not very high, I believe it is close to the theotical best.
+
+# Final Model
+I used a ridge regression, and I used GridSearch CV to find the optimal shrinkage parameter. I used ridge because I the stats avaliable at 15 minutes are likely to have high collinearity, so I will try to penalize that. I also tried to do polynomial regression as I suspect that the golddiffat15 and golddiffat25 might not be linearly related because the team with advantages tends to gain gold faster than the opponent. I added "position", "xpdiffat15", "csdiffat15", "killsat15", "assistsat15" because they are the only stats avaliable at 15 that seems to be representative of the game. "deathsat15" is very close to "killsat15" because both side of the game is in the data, so I did not use it. I believe those features can provide a better summary of the game play. The gold at 15 might be achieve with the loss of those other stats and adding them takes this into account. 
+The best shrinkage paramter is alpha: 1389.4954943731361
+The test RMSE is: 1172.096812383099
+The best model is with degree 3 polynomial
+The test RMSE decrease by a little, showing some improvement
+
+# Fairness Analysis
+I tested whether my model is performing well on player with at least one death in the first 15 minutes and those did not.
 
 
