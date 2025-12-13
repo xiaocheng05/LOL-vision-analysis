@@ -76,6 +76,7 @@ I used a pivot table indexed by side and columns of different positions. The val
 |:-----|--------:|--------:|--------:|--------:|--------:|
 | Blue | 38.6452 | 43.4116 | 33.8472 | 79.7019 | 31.0143 |
 | Red  | 37.0386 | 42.8096 | 33.6705 | 78.7160 | 30.6875 |
+
 This further shows that support and jungle tends to have higher vision score. More interestingly, the blue side tends to have higher vision score compared to the red side. The lets me to question whether the map of the game is unfair, giving the blue side more chances to gain vision. I will examine whether this difference in vision score of the two side is likely due to change or not in the further sections. 
 
 # Assessment of Missingness
